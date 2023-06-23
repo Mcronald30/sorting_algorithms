@@ -7,68 +7,55 @@
  */
 void cocktail_sort_list(listint_t **list)
 {
-	int swapped = 0;
-	listint_t *ptr;
+	listint_t *ptr = *list, *first = NULL, *last = NULL;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (!list)
 		return;
-
-	do
-
-	{
-		swapped = 0;
-		for (ptr = *list; ptr->next != NULL; ptr = ptr->next)
+	if (!(*list))
+		return;
+	if (!(*list)->next)
+		return;
+	do {
+		while (ptr->next)
 		{
 			if (ptr->n > ptr->next->n)
-			{
-				swap_nodes(ptr, &(ptr->next), list);
-				print_list(*list);
-				swapped = 1;
-			}
+				swapnodes(ptr->next, ptr, list);
+			else
+				ptr = ptr->next;
 		}
-
-		if (!swapped)
-			break;
-
-		swapped = 0;
-		for (ptr = ptr->prev; ptr->prev != NULL; ptr = ptr->prev)
+		last = ptr;
+		while (ptr->prev != first)
 		{
 			if (ptr->n < ptr->prev->n)
-		{
-			swap_nodes(ptr->prev, &(ptr), list);
-			print_list(*list);
-			swapped = 1;
+				swapnodes(ptr, ptr->prev, list);
+			else
+				ptr = ptr->prev;
 		}
-		}
-	} while (swapped);
+		first = ptr;
+	} while (first != last);
 }
 
 /**
- * swap_nodes - Swaps two adjacent nodes in a doubly linked list
+ * swapnodes - Swaps two adjacent nodes in a doubly linked list
  * @left: Pointer to the left node
  * @right: Double pointer to the right node
  * @list: Double pointer to the head of the linked list
  */
-void swap_nodes(listint_t *left, listint_t **right, listint_t **list)
+void swapnodes(listint_t *left, listint_t *right, listint_t **list)
 {
-	listint_t *temp;
+	listint_t *temp1 = left->next;
+	listint_t *temp2 = right->prev;
 
-	if (left->prev != NULL)
-		left->prev->next = *right;
-	else
-
-		*list = *right;
-
-	(*right)->prev = left->prev;
-	left->prev = *right;
-	left->next = (*right)->next;
-
-	if ((*right)->next != NULL)
-		(*right)->next->prev = left;
-
-	(*right)->next = left;
-	*right = left->next;
-
-	if (*right != NULL)
-		(*right)->prev = left;
+	if (temp1 != NULL)
+		temp1->prev = right;
+	if (temp2 != NULL)
+		temp2->next = left;
+	left->prev = temp2;
+	right->next = temp1;
+	left->next = right;
+	right->prev = left;
+	if (*list == right)
+		*list = left;
+	print_list(*list);
 }
+
