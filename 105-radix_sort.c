@@ -13,62 +13,66 @@ int get_max(int *array, size_t size);
  */
 void radix_sort(int *array, size_t size)
 {
-	int max = get_max(array, size);
-	int exp;
+	int exp, maximum = 0;
+	int *output = '\0';
 
-	for (exp = 1; max / exp > 0; exp *= 10)
+	if (array == '\0' || size < 2)
+		return;
+
+	maximum = getMax(array, size);
+	output = malloc(size * sizeof(int));
+	if (output == '\0')
+		return;
+
+	for (exp = 1; maximum / exp > 0; exp *= 10)
 	{
-		count_sort(array, size, exp);
+		countSort(array, size, exp, output);
 		print_array(array, size);
 	}
+	free(output);
 }
 
 /**
  * count_sort - a helper function to perform counting
  * sort based on a specific digit position
- * @array: the pointer to the array of integers
- * @size: the number of elements in the array.
+ * @arr: the pointer to the array of integers
+ * @n: the number of elements in the array.
  * @exp: the digit position (power of 10) that is used for sorting.
+ * output: array to save the temporary values.
  */
-void count_sort(int *array, size_t size, int exp)
+void count_sort(int *arr, size_t n, int exp, int *output)
 {
-	int *output = malloc(sizeof(int) * size);
+	int i;
 	int count[10] = {0};
 
-	size_t i;
-
-	for (i = 0; i < size; i++)
-		count[(array[i] / exp) % 10]++;
+	for (i = 0; i < (int)n; i++)
+		count[(arr[i] / exp) % 10]++;
 
 	for (i = 1; i < 10; i++)
 		count[i] += count[i - 1];
 
-	for (i = size - 1; i >= 0; i--)
+	for (i = n - 1; i >= 0; i--)
 	{
-		output[count[(array[i] / exp) % 10] - 1] = array[i];
-		count[(array[i] / exp) % 10]--;
+		output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+		count[(arr[i] / exp) % 10]--;
 	}
-	for (i = 0; i < size; i++)
-		array[i] = output[i];
 
-	free(output);
+	for (i = 0; i < (int)n; i++)
+		arr[i] = output[i];
 }
 
 /**
  * get_max - function to determine the maximum
  * element in the given array.
- * @array: the pointer to the array of integers.
- * @size: the number of elements in the array.
+ * @arr: the pointer to the array of integers.
+ * @n: the number of elements in the array.
  */
-int get_max(int *array, size_t size)
+int get_max(int *arr, int n)
 {
-	int max = array[0];
-	size_t i;
+	int i, max = arr[0];
 
-	for (i = 1; i < size; i++)
-	{
-		if (array[i] > max)
-			max = array[i];
-	}
+	for (i = 1; i < n; i++)
+		if (arr[i] > max)
+			max = arr[i];
 	return (max);
 }
