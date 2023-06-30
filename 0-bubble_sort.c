@@ -1,11 +1,14 @@
 #include "sort.h"
 
 /**
- * bubble_sort - sorts an array of integers in ascending order
+ * bubble_sort - sorts an array of integers
+ * in ascending order
+ *
  * @array: a pointer to the array of integers
+ *
  * @size: epresents the number of elements in the array.
+ *
  */
-
 void bubble_sort(int *array, size_t size)
 {
 	int swap;
