@@ -5,33 +5,28 @@
  * @array: a pointer to the array of integers
  * @size: epresents the number of elements in the array.
  */
+
 void bubble_sort(int *array, size_t size)
 {
-	size_t j;
-	int swapped;
-	size_t tmp;
-	size_t tmpsize;
+	int swap;
+	size_t i, k;
 
-	if (array == NULL)
+	if (!array || !size)
 		return;
-	tmpsize = size;
-	swapped = 1;
-	while (swapped)
+
+	i = 0;
+	while (i < size)
 	{
-		swapped = 0;
-		j = 0;
-		while (j < tmpsize - 1)
+		for (k = 0; k < size - 1; k++)
 		{
-			if (array[j] > array[j + 1])
+			if (array[k] > array[k + 1])
 			{
-				tmp = array[j + 1];
-				array[j + 1] = array[j];
-				array[j] = tmp;
+				swap = array[k];
+				array[k] = array[k + 1];
+				array[k + 1] = swap;
 				print_array(array, size);
-				swapped = 1;
 			}
-			j++;
 		}
-		tmpsize = j;
+		i++;
 	}
 }
