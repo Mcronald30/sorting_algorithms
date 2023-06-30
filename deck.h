@@ -34,3 +34,6 @@ typedef struct deck_node_s
 } deck_node_t;
 
 void sort_deck(deck_node_t **deck);
+int less_than(const card_t *a, const card_t *b);
+void swap(deck_node_t *a, deck_node_t *b);
+void insertion_sort_list(deck_node_t **list);
